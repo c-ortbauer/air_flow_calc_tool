@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Air Flow Calc Tool</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <p>Area</p>
+      <label for="A">Querschnittsfläche:</label>
+      <input type="number" id="A" name="A" min="0.001" max="100" step="0.001" />
+      <span class="units">m²</span>
+    </div>
+    <div class="wrapper">
+      <p>Speed</p>
+      <label for="v">Geschwindigkeit:</label>
+      <input type="number" id="v" name="v" min="0.001" max="100" step="0.001" />
+      <span class="units">m/s</span>
+    </div>
+    <div class="wrapper">
+      <p>Volume Flow</p>
+      <label for="Q">Volumenstrom:</label>
+      <input type="number" id="Q" name="Q" min="0.001" max="100" step="0.001" />
+      <span class="units">m³/s</span>
+    </div>
+  </body>
+  <style>
+    .wrapper {
+      position: relative;
+    }
+    .units {
+      position: absolute;
+      right: 14px (or the px that fit with your design);
+    }
+  </style>
+  <script>
+    const A = document.getElementById("A");
+
+    A.addEventListener("change", change_A);
+
+    function change_A(e) {
+        document.getElementById("Q").value = e.target.value;
+    }
+  </script>
+</html>
