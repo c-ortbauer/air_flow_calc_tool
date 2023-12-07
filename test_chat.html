@@ -43,17 +43,17 @@
 
     <label for="airFlow">Air Flow:</label>
     <div>
-        <input type="number" id="airFlowM3S" placeholder="Enter air flow (m³/s)" oninput="convertAirFlow(); calculateVolumeFlow()">
+        <input type="number" id="airFlowM3S" placeholder="Enter air flow (m³/s)" oninput="convertUnitsAirFlow(); calculateVolumeFlow()">
         <span class="unit-label">m³/s</span>
-        <input type="number" id="airFlowM3H" placeholder="Enter air flow (m³/h)" oninput="convertAirFlow(); calculateVolumeFlow()">
+        <input type="number" id="airFlowM3H" placeholder="Enter air flow (m³/h)" oninput="convertUnitsAirFlow(); calculateVolumeFlow()">
         <span class="unit-label">m³/h</span>
     </div>
 
     <label for="crossSection">Cross Section:</label>
     <div>
-        <input type="number" id="crossSectionM2" placeholder="Enter cross section (m²)" oninput="convertUnits(); calculateVolumeFlow()">
+        <input type="number" id="crossSectionM2" placeholder="Enter cross section (m²)" oninput="convertUnitsCrossSection(); calculateVolumeFlow()">
         <span class="unit-label">m²</span>
-        <input type="number" id="diameterMM" placeholder="Enter cross section (ft²)" oninput="convertUnits(); calculateVolumeFlow()">
+        <input type="number" id="diameterMM" placeholder="Enter cross section (ft²)" oninput="convertUnitsCrossSection(); calculateVolumeFlow()">
         <span class="unit-label">ft²</span>
     </div>
 
@@ -66,7 +66,7 @@
     <p id="result"></p>
 
     <script>
-        function convertAirFlow() {
+        function convertUnitsAirFlow() {
             // Get input values
             var airFlowM3S = parseFloat(document.getElementById('airFlowM3S').value);
             var airFlowM3H = parseFloat(document.getElementById('airFlowM3H').value);
@@ -86,7 +86,7 @@
             }
         }
 
-        function convertUnits() {
+        function convertUnitsCrossSection() {
             // Get input values
             var crossSectionM2 = parseFloat(document.getElementById('crossSectionM2').value);
             var diameterMM = parseFloat(document.getElementById('diameterMM').value);

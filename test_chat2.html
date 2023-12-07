@@ -1,179 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Air Flow Calculator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
 
-        input {
-            width: 70%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
+      input {
+        width: 50%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+      }
 
-        .unit-label {
-            display: inline-block;
-            width: 30%;
-            margin-left: 5px;
-        }
+      .unit-label {
+        display: inline-block;
+        width: 25%;
+        margin-left: 5px;
+      }
 
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+      button {
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
 
-        .unconfirmed {
-            border: 2px solid red;
-        }
+      .unconfirmed {
+        border: 2px solid red;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <h1>Air Flow Calculator</h1>
 
     <label for="airFlow">Air Flow:</label>
     <div>
-        <input type="number" id="airFlowM3S" placeholder="Enter air flow (m³/s)" oninput="highlightUnconfirmed(event)">
-        <span class="unit-label">m³/s</span>
-        <input type="number" id="airFlowMH" placeholder="Enter air flow (m³/h)" oninput="highlightUnconfirmed(event)">
-        <span class="unit-label">m³/h</span>
+      <input
+        type="number"
+        id="airFlowM3S"
+        placeholder="Enter air flow (m³/s)"
+        oninput="changedInput(event)"
+      />
+      <span class="unit-label">m³/s</span>
+      <input
+        type="number"
+        id="airFlowM3H"
+        placeholder="Enter air flow (m³/h)"
+        oninput="changedInput(event)"
+      />
+      <span class="unit-label">m³/h</span>
     </div>
 
     <label for="crossSection">Cross Section:</label>
     <div>
-        <input type="number" id="crossSectionMeters" placeholder="Enter cross section (m²)" oninput="highlightUnconfirmed(event)">
-        <span class="unit-label">m²</span>
-        <input type="number" id="crossSectionFeet" placeholder="Enter cross section (ft²)" oninput="highlightUnconfirmed(event)">
-        <span class="unit-label">ft²</span>
+      <input
+        type="number"
+        id="crossSectionM2"
+        placeholder="Enter cross section (m²)"
+        oninput="changedInput(event)"
+      />
+      <span class="unit-label">m²</span>
+      <input
+        type="number"
+        id="crossSectionDiameterMM"
+        placeholder="Enter diamter (mm)"
+        oninput="changedInput(event)"
+      />
+      <span class="unit-label">mm</span>
     </div>
 
     <label for="airSpeed">Air Speed (m/s):</label>
     <div>
-        <input type="number" id="airSpeed" placeholder="Enter air speed" oninput="highlightUnconfirmed(event)">
-        <span class="unit-label">m/s</span>
+      <input
+        type="number"
+        id="airSpeed"
+        placeholder="Enter air speed"
+        oninput="changedInput(event)"
+      />
+      <span class="unit-label">m/s</span>
     </div>
+
+    <!-- oninput="highlightUnconfirmed(event, this.id)" -->
 
     <p id="result"></p>
 
     <script>
-        function convertAirFlow() {
-            // Get input values
-            var airFlowM3S = parseFloat(document.getElementById('airFlowM3S').value);
-            var airFlowM3H = parseFloat(document.getElementById('airFlowM3H').value);
+      function changedInput(event) {
+        console.log("changedInput");
+        console.log(event.currentTarget.id);
+        convertUnits(event.currentTarget.id);
+        // calculateVolumeFlow();
+      }
 
-            // Convert air flow to m³/s if entered in m³/h
-            if (!isNaN(airFlowM3H)) {
-                document.getElementById('airFlowM3S').value = (airFlowM3H / 3600).toFixed(4); // 1 m³/h = 1/3600 m³/s
-            } else {
-                document.getElementById('airFlowM3S').value = ''; // Clear the other input field
-            }
-
-            // Convert air flow to m³/h if entered in m³/s
-            if (!isNaN(airFlowM3S)) {
-                document.getElementById('airFlowM3H').value = (airFlowM3S * 3600).toFixed(4); // 1 m³/s = 3600 m³/h
-            } else {
-                document.getElementById('airFlowM3H').value = ''; // Clear the other input field
-            }
+      function convertUnits(idEntered) {
+        // Convert air flow to m³/s if entered in m³/h
+        if ("airFlowM3H" == idEntered) {
+          // Get input value
+          var airFlowM3H = parseFloat(
+            document.getElementById("airFlowM3H").value
+          );
+          if (!isNaN(airFlowM3H)) {
+            document.getElementById("airFlowM3S").value = (
+              airFlowM3H / 3600
+            ).toFixed(4); // 1 m³/s = 3600 m³/h
+          }
         }
 
-        function convertUnits() {
-            // Get input values
-            var crossSectionM2 = parseFloat(document.getElementById('crossSectionM2').value);
-            var diameterMM = parseFloat(document.getElementById('diameterMM').value);
-
-            // Convert cross section to square meters if entered in square feet
-            if (!isNaN(diameterMM)) {
-                document.getElementById('crossSectionM2').value = (diameterMM * 0.092903).toFixed(4); // 1 square foot = 0.092903 square meters
-            } else {
-                document.getElementById('crossSectionM2').value = ''; // Clear the other input field
-            }
-
-            // Convert cross section to square feet if entered in square meters
-            if (!isNaN(crossSectionM2)) {
-                document.getElementById('diameterMM').value = (crossSectionM2 / 0.092903).toFixed(4); // 1 square meter = 10.764 square feet
-            } else {
-                document.getElementById('diameterMM').value = ''; // Clear the other input field
-            }
+        // Convert air flow to m³/h if entered in m³/s
+        if ("airFlowM3S" == idEntered) {
+          // Get input value
+          var airFlowM3S = parseFloat(
+            document.getElementById("airFlowM3S").value
+          );
+          if (!isNaN(airFlowM3S)) {
+            document.getElementById("airFlowM3H").value = (
+              airFlowM3S * 3600
+            ).toFixed(4); // 1 m³/s = 3600 m³/h
+          }
         }
 
-        function calculateVolumeFlow() {
-            // Get input values
-            var airFlowM3S = parseFloat(document.getElementById('airFlowM3S').value);
-            var crossSectionM2 = parseFloat(document.getElementById('crossSectionM2').value);
-            var airSpeedMS = parseFloat(document.getElementById('airSpeedMS').value);
-
-            // Count the number of entered fields
-            var enteredFields = 0;
-            if (!isNaN(airFlowM3S) || !isNaN(document.getElementById('airFlowM3H').value)) enteredFields++;
-            if (!isNaN(crossSectionM2) || !isNaN(document.getElementById('diameterMM').value)) enteredFields++;
-            if (!isNaN(airSpeedMS)) enteredFields++;
-
-            // Calculate volume flow rate if at least two fields are entered
-            if (enteredFields >= 2) {
-                // Convert air flow to m³/s if entered in m³/h
-                if (!isNaN(document.getElementById('airFlowM3H').value)) {
-                    airFlowM3S = document.getElementById('airFlowM3H').value / 3600; // 1 m³/h = 1/3600 m³/s
-                }
-
-                // Convert cross section to square meters if entered in square feet
-                if (!isNaN(document.getElementById('diameterMM').value)) {
-                    crossSectionM2 = document.getElementById('diameterMM').value * 0.092903; // 1 square foot = 0.092903 square meters
-                }
-
-                // Calculate volume flow rate using the entered values
-                var volumeFlow = airFlowM3S * crossSectionM2 * airSpeedMS;
-
-                // Display the result
-                document.getElementById('result').innerHTML = 'Volume Flow Rate: ' + volumeFlow.toFixed(2) + ' m³/s';
-            } else {
-                // Clear the result if fewer than two fields are entered
-                document.getElementById('result').innerHTML = '';
-            }
+        // Cross section in m²
+        if ("crossSectionM2" == idEntered) {
+          // Get input value
+          var crossSectionM2 = parseFloat(
+            document.getElementById("crossSectionM2").value
+          );
+          if (!isNaN(crossSectionM2)) {
+            document.getElementById("crossSectionDiameterMM").value = (
+              (crossSectionM2 / Math.PI) ** 0.5 *
+              2 *
+              1000
+            ).toFixed(4);
+          }
         }
 
-        function highlightUnconfirmed(event) {
-            const inputField = event.target;
-            const inputValue = inputField.value;
+        // Diameter in mm
+        if ("crossSectionDiameterMM" == idEntered) {
+          // Get input value
+          var crossSectionDiameterMM = parseFloat(
+            document.getElementById("crossSectionDiameterMM").value
+          );
+          if (!isNaN(crossSectionDiameterMM)) {
+            document.getElementById("crossSectionM2").value = (
+              (crossSectionDiameterMM / 1000 / 2) ** 2 *
+              Math.PI
+            ).toFixed(4);
+          }
+        }
+      }
 
-            // Highlight the input field if it has a non-empty, non-confirmed value
-            if (inputValue !== '' && !inputField.hasAttribute('data-confirmed')) {
-                inputField.classList.add('unconfirmed');
-            } else {
-                inputField.classList.remove('unconfirmed');
-            }
+      //   function convertUnitsCrossSection(id) {
+      //     // Get input values
+      //     var crossSectionM2 = parseFloat(
+      //       document.getElementById("crossSectionM2").value
+      //     );
+      //     var diameterMM = parseFloat(
+      //       document.getElementById("diameterMM").value
+      //     );
 
-            // Remove the highlight if the user confirms the input by pressing Enter
-            if (event.key === 'Enter') {
-                inputField.classList.remove('unconfirmed');
-                inputField.setAttribute('data-confirmed', 'true');
-                calculateVolumeFlow(); // Recalculate after confirming the input
-            }
+      //     // Convert cross section to square meters if entered in square feet
+      //     if (!isNaN(diameterMM)) {
+      //       document.getElementById("crossSectionM2").value = (
+      //         diameterMM * 0.092903
+      //       ).toFixed(4); // 1 square foot = 0.092903 square meters
+      //     } else {
+      //       document.getElementById("crossSectionM2").value = ""; // Clear the other input field
+      //     }
+
+      //     // Convert cross section to square feet if entered in square meters
+      //     if (!isNaN(crossSectionM2)) {
+      //       document.getElementById("diameterMM").value = (
+      //         crossSectionM2 / 0.092903
+      //       ).toFixed(4); // 1 square meter = 10.764 square feet
+      //     } else {
+      //       document.getElementById("diameterMM").value = ""; // Clear the other input field
+      //     }
+      //   }
+
+      function calculateVolumeFlow() {
+        // Get input values
+        var airFlowM3S = parseFloat(
+          document.getElementById("airFlowM3S").value
+        );
+        var crossSectionM2 = parseFloat(
+          document.getElementById("crossSectionM2").value
+        );
+        var airSpeedMS = parseFloat(
+          document.getElementById("airSpeedMS").value
+        );
+
+        // Count the number of entered fields
+        var enteredFields = 0;
+        if (
+          !isNaN(airFlowM3S) ||
+          !isNaN(document.getElementById("airFlowM3H").value)
+        )
+          enteredFields++;
+        if (
+          !isNaN(crossSectionM2) ||
+          !isNaN(document.getElementById("diameterMM").value)
+        )
+          enteredFields++;
+        if (!isNaN(airSpeedMS)) enteredFields++;
+
+        // Calculate volume flow rate if at least two fields are entered
+        if (enteredFields >= 2) {
+          // Convert air flow to m³/s if entered in m³/h
+          if (!isNaN(document.getElementById("airFlowM3H").value)) {
+            airFlowM3S = document.getElementById("airFlowM3H").value / 3600; // 1 m³/h = 1/3600 m³/s
+          }
+
+          // Convert cross section to square meters if entered in square feet
+          if (!isNaN(document.getElementById("diameterMM").value)) {
+            crossSectionM2 =
+              document.getElementById("diameterMM").value * 0.092903; // 1 square foot = 0.092903 square meters
+          }
+
+          // Calculate volume flow rate using the entered values
+          var volumeFlow = airFlowM3S * crossSectionM2 * airSpeedMS;
+
+          // Display the result
+          document.getElementById("result").innerHTML =
+            "Volume Flow Rate: " + volumeFlow.toFixed(2) + " m³/s";
+        } else {
+          // Clear the result if fewer than two fields are entered
+          document.getElementById("result").innerHTML = "";
+        }
+      }
+
+      function highlightUnconfirmed(event, idEntered) {
+        const inputField = event.target;
+        const inputValue = inputField.value;
+
+        // Highlight the input field if it has a non-empty, non-confirmed value
+        if (inputValue !== "" && !inputField.hasAttribute("data-confirmed")) {
+          inputField.classList.add("unconfirmed");
+        } else {
+          inputField.classList.remove("unconfirmed");
         }
 
-        // Attach an event listener to the whole document to clear the confirmation status
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                const unconfirmedInputs = document.querySelectorAll('.unconfirmed');
-                unconfirmedInputs.forEach(function (input) {
-                    input.classList.remove('unconfirmed');
-                    input.removeAttribute('data-confirmed');
-                });
-            }
-        });
+        // // Remove the highlight if the user confirms the input by pressing Enter
+        // if (event.key === "Enter") {
+
+        // }
+      }
+
+      //   // Attach an event listener to the whole document to clear the confirmation status
+      //   document.addEventListener("keydown", function (event) {
+      //     if (event.key === "Escape") {
+      //       const unconfirmedInputs = document.querySelectorAll(".unconfirmed");
+      //       unconfirmedInputs.forEach(function (input) {
+      //         input.classList.remove("unconfirmed");
+      //         input.removeAttribute("data-confirmed");
+      //       });
+      //     }
+      //   });
+
+      //   const inputFields = document.getElementsByClassName("input");
+      //   inputFields.forEach(function (elem) {
+      //     elem.addEventListener("keyup", function (event) {
+      //       if (event.key === "Enter") {
+      //         // Do work
+      //         inputField.classList.remove("unconfirmed");
+      //         inputField.setAttribute("data-confirmed", "true");
+      //         convertUnits(envent.target.id);
+      //         calculateVolumeFlow(); // Recalculate after confirming the input
+      //       } else {
+      //         highlightUnconfirmed(event);
+      //       }
+      //     });
+      //   });
+
+      //   window.addEventListener("DOMContentLoaded", function () {
+      //     // on page load
+      //     document
+      //       .getElementById("input")
+      //       .addEventListener("keyup", function (e) {
+      //         // passing the event
+      //         const tgt = e.target;
+      //         const id = tgt.id;
+      //         console.log("You typed in", id);
+      //       });
+      //   });
     </script>
-</body>
+  </body>
 </html>
