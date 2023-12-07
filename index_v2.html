@@ -80,20 +80,16 @@
       <span class="unit-label">mm</span>
     </div>
 
-    <label for="speed">Air Speed (m/s):</label>
+    <label for="speedMS">Air Speed (m/s):</label>
     <div>
       <input
         type="number"
-        id="speed"
+        id="speedMS"
         placeholder="Enter air speed"
         oninput="changedInput(event)"
       />
       <span class="unit-label">m/s</span>
     </div>
-
-    <!-- oninput="highlightUnconfirmed(event, this.id)" -->
-
-    <p id="result"></p>
 
     <script>
       function changedInput(event) {
@@ -156,10 +152,27 @@
       }
 
       function calculateVolumeFlow() {
-        if (inputOrder.length >= 2){
-          iO2 = inputOrder.slice(0,2)
-          console.log(iO2)
-          // if inputOrder.slice(0,2)
+        if (inputOrder.length >= 2) {
+          iO2 = inputOrder.slice(0, 2);
+          console.log(iO2);
+          if (iO2.includes("area") && iO2.includes("flow")) {
+            var areaM2 = parseFloat(document.getElementById("areaM2").value);
+            var flowM3S = parseFloat(document.getElementById("flowM3S").value);
+            document.getElementById("speedMS").value = flowM3S / areaM2;
+          } else if (iO2.includes("area") && iO2.includes("speed")) {
+            var areaM2 = parseFloat(document.getElementById("areaM2").value);
+            var speedMS = parseFloat(document.getElementById("speedMS").value);
+            flowM3S = speedMS * areaM2;
+            document.getElementById("flowM3S").value = flowM3S;
+            document.getElementById("flowM3H").value = speedMS * areaM2 * 3600;
+          } else if (iO2.includes("flow") && iO2.includes("speed")) {
+            var flowM3S = parseFloat(document.getElementById("flowM3S").value);
+            var speedMS = parseFloat(document.getElementById("speedMS").value);
+            areaM2 = flowM3S / speedMS;
+            document.getElementById("areaM2").value = areaM2;
+            document.getElementById("areaDiameterMM").value =
+              (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
+          }
         }
       }
 
@@ -190,7 +203,7 @@
           }
         }
 
-        console.log(inputOrder)
+        console.log(inputOrder);
       }
     </script>
   </body>
