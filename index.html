@@ -100,8 +100,6 @@
 
     <script>
       function changedInput(event) {
-        console.log("changedInput");
-        console.log(event.currentTarget.id);
         convertUnits(event.currentTarget.id);
         updateInputOrder(event.currentTarget.id);
         calculateVolumeFlow();
@@ -154,18 +152,20 @@
       function calculateVolumeFlow() {
         if (inputOrder.length >= 2) {
           iO2 = inputOrder.slice(0, 2);
-          console.log(iO2);
           if (iO2.includes("area") && iO2.includes("flow")) {
+            // calculate speed
             var areaM2 = parseFloat(document.getElementById("areaM2").value);
             var flowM3S = parseFloat(document.getElementById("flowM3S").value);
             document.getElementById("speedMS").value = flowM3S / areaM2;
           } else if (iO2.includes("area") && iO2.includes("speed")) {
+            // calculate flow
             var areaM2 = parseFloat(document.getElementById("areaM2").value);
             var speedMS = parseFloat(document.getElementById("speedMS").value);
             flowM3S = speedMS * areaM2;
             document.getElementById("flowM3S").value = flowM3S;
             document.getElementById("flowM3H").value = speedMS * areaM2 * 3600;
           } else if (iO2.includes("flow") && iO2.includes("speed")) {
+            // calculate area
             var flowM3S = parseFloat(document.getElementById("flowM3S").value);
             var speedMS = parseFloat(document.getElementById("speedMS").value);
             areaM2 = flowM3S / speedMS;
@@ -202,8 +202,6 @@
             inputOrder.unshift(inputType);
           }
         }
-
-        console.log(inputOrder);
       }
     </script>
   </body>
