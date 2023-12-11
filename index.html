@@ -3,92 +3,99 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Air Flow Calculator</title>
+    <title>Volumenstrom Rechner</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 20px;
       }
 
+      h1,
+      h2 {
+        text-align: center;
+      }
+
+      div.fields {
+        display: grid;
+        grid-template-columns: 1fr fit-content(20%) 1fr;
+        /* grid-template-columns: max-content 2fr max-content; */
+        align-items: center;
+        grid-gap: 5px;
+      }
+      div.fields label {
+        text-align: right;
+      }
+      div.fields label:after {
+        content: ":";
+      }
+      div.fields unit {
+        text-align: left;
+      }
+
       label {
         display: block;
         margin-bottom: 5px;
       }
-
-      input {
-        width: 50%;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-      }
-
-      .unit-label {
-        display: inline-block;
-        width: 25%;
-        margin-left: 5px;
-      }
-
-      button {
-        padding: 10px;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        cursor: pointer;
-      }
-
-      .unconfirmed {
-        border: 2px solid red;
-      }
     </style>
   </head>
   <body>
-    <h1>Air Flow Calculator</h1>
+    <h1>Volumenstrom Rechner</h1>
 
-    <label for="flowM3S">Air Flow:</label>
-    <div>
-      <input
-        type="number"
-        id="flowM3S"
-        placeholder="Enter air flow (m³/s)"
-        oninput="changedInput(event)"
-      />
-      <span class="unit-label">m³/s</span>
+    <h2>Volumenstrom</h2>
+
+    <div class="fields">
+      <label>Volumenstrom</label>
       <input
         type="number"
         id="flowM3H"
         placeholder="Enter air flow (m³/h)"
         oninput="changedInput(event)"
       />
-      <span class="unit-label">m³/h</span>
+      <unit>m³/h</unit>
+
+      <label>Volumenstrom</label>
+      <input
+        type="number"
+        id="flowM3S"
+        placeholder="Enter air flow (m³/s)"
+        oninput="changedInput(event)"
+      />
+      <unit>m³/s</unit>
     </div>
 
-    <label for="areaM2">Querschnittsfläche:</label>
-    <div>
+    <h2>Querschnittsfläche</h2>
+
+    <div class="fields">
+      <label>Druchmesser</label>
+      <input
+        type="number"
+        id="areaDiameterMM"
+        placeholder="Enter diameter (mm)"
+        oninput="changedInput(event)"
+      />
+      <unit>mm</unit>
+
+      <label>Querschnittsfläche</label>
       <input
         type="number"
         id="areaM2"
         placeholder="Enter area section (m²)"
         oninput="changedInput(event)"
       />
-      <span class="unit-label">m²</span>
-      <input
-        type="number"
-        id="areaDiameterMM"
-        placeholder="Enter diamter (mm)"
-        oninput="changedInput(event)"
-      />
-      <span class="unit-label">mm</span>
+      <unit>m²</unit>
     </div>
 
-    <label for="speedMS">Air Speed (m/s):</label>
-    <div>
+    <h2>Geschwindigkeit</h2>
+
+    <div class="fields">
+      <label>Geschwindigkeit</label>
       <input
         type="number"
         id="speedMS"
-        placeholder="Enter air speed"
+        placeholder="Enter air speed (m/s)"
         oninput="changedInput(event)"
       />
-      <span class="unit-label">m/s</span>
+      <unit>m/s</unit>
     </div>
 
     <script>
@@ -117,9 +124,7 @@
           // Get input value
           var flowM3S = parseFloat(document.getElementById("flowM3S").value);
           if (!isNaN(flowM3S)) {
-            document.getElementById("flowM3H").value = (flowM3S * 3600).toFixed(
-              4
-            ); // 1 m³/s = 3600 m³/h
+            document.getElementById("flowM3H").value = flowM3S * 3600;
           }
         }
 
@@ -128,11 +133,8 @@
           // Get input value
           var areaM2 = parseFloat(document.getElementById("areaM2").value);
           if (!isNaN(areaM2)) {
-            document.getElementById("areaDiameterMM").value = (
-              (areaM2 / Math.PI) ** 0.5 *
-              2 *
-              1000
-            ).toFixed(4);
+            document.getElementById("areaDiameterMM").value =
+              (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
           }
         }
 
@@ -143,10 +145,8 @@
             document.getElementById("areaDiameterMM").value
           );
           if (!isNaN(areaDiameterMM)) {
-            document.getElementById("areaM2").value = (
-              (areaDiameterMM / 1000 / 2) ** 2 *
-              Math.PI
-            ).toFixed(4);
+            document.getElementById("areaM2").value =
+              (areaDiameterMM / 1000 / 2) ** 2 * Math.PI;
           }
         }
       }
