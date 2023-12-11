@@ -6,7 +6,7 @@
     <title>Volumenstrom Rechner</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         margin: 20px;
       }
 
@@ -17,7 +17,8 @@
 
       div.fields {
         display: grid;
-        grid-template-columns: 2fr 1fr 2fr;
+        grid-template-columns: 2fr minmax(max-content, 1fr) 2fr;
+        /* grid-template-columns: 2fr 1fr 2fr; */
         /* grid-template-columns: 1fr fit-content(20%) 1fr; */
         /* grid-template-columns: max-content 2fr max-content; */
         align-items: center;
@@ -28,6 +29,11 @@
       }
       div.fields label:after {
         content: ":";
+      }
+      div.fields input {
+        /* font-family: 'Courier New', Courier, monospace;
+        font-family: ; */
+        font-size: larger;
       }
       div.fields unit {
         text-align: left;
@@ -200,7 +206,13 @@
             // calculate speed
             var areaM2 = parseFloat(document.getElementById("areaM2").value);
             var flowM3S = parseFloat(document.getElementById("flowM3S").value);
-            document.getElementById("speedMS").value = flowM3S / areaM2;
+            var speedMS = flowM3S / areaM2;
+            document.getElementById("speedMS").value = speedMS;
+            var densityKgM3 = parseFloat(
+              document.getElementById("densityKgM3").value
+            );
+            document.getElementById("speedDynPressurePa").value =
+              (densityKgM3 / 2) * speedMS ** 2;
           } else if (iO2.includes("area") && iO2.includes("speed")) {
             // calculate flow
             var areaM2 = parseFloat(document.getElementById("areaM2").value);
