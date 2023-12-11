@@ -50,7 +50,7 @@
       <input
         type="number"
         id="flowM3H"
-        placeholder="Enter air flow (m³/h)"
+        placeholder="Volumenstrom (m³/h)"
         oninput="changedInput(event)"
       />
       <unit>m³/h</unit>
@@ -59,7 +59,7 @@
       <input
         type="number"
         id="flowM3S"
-        placeholder="Enter air flow (m³/s)"
+        placeholder="Volumenstrom (m³/s)"
         oninput="changedInput(event)"
       />
       <unit>m³/s</unit>
@@ -68,11 +68,11 @@
     <h2>Querschnittsfläche</h2>
 
     <div class="fields">
-      <label>Druchmesser</label>
+      <label>Druchmesser (innen)</label>
       <input
         type="number"
         id="areaDiameterMM"
-        placeholder="Enter diameter (mm)"
+        placeholder="Druchmesser (mm)"
         oninput="changedInput(event)"
       />
       <unit>mm</unit>
@@ -81,7 +81,7 @@
       <input
         type="number"
         id="areaM2"
-        placeholder="Enter area section (m²)"
+        placeholder="Querschnittsfläche (m²)"
         oninput="changedInput(event)"
       />
       <unit>m²</unit>
@@ -94,7 +94,7 @@
       <input
         type="number"
         id="speedMS"
-        placeholder="Enter air speed (m/s)"
+        placeholder="Geschwindigkeit (m/s)"
         oninput="changedInput(event), updateInputOrderSpeed(event.currentTarget.id)"
       />
       <unit>m/s</unit>
@@ -103,7 +103,7 @@
       <input
         type="number"
         id="speedDynPressurePa"
-        placeholder="Enter dynamic pressure (Pa)"
+        placeholder="dynamischer Druck (Pa)"
         oninput="changedInput(event), updateInputOrderSpeed(event.currentTarget.id)"
       />
       <unit>Pa</unit>
@@ -114,11 +114,18 @@
         id="densityKgM3"
         value="1.225"
         step="0.05"
-        placeholder="Enter density (kg/m³)"
+        placeholder="Dichte (kg/m³)"
         oninput="changedInput(event)"
       />
       <unit>kg/m³</unit>
     </div>
+
+    <footer style="text-align: right">
+      <p>
+        Erstellt von
+        <a href="mailto:c.ortbauer@scheuch.com">c.ortbauer@scheuch.com</a>
+      </p>
+    </footer>
 
     <script>
       function changedInput(event) {
