@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Volumenstrom Rechner</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <style>
       body {
         font-family: Arial, Helvetica, sans-serif;
@@ -121,11 +125,11 @@
       <input
         type="number"
         id="pressureDropPaM"
-        placeholder="Druckverlust (Pa/m)"
+        placeholder="Druckverlust (Pa/lfm)"
         readonly
         oninput="changedInput(event)"
       />
-      <unit>Pa/m</unit>
+      <unit>Pa/lfm</unit>
     </div>
 
     <footer style="text-align: right">
@@ -148,23 +152,23 @@
       // convert entered values to all other units
       function convertUnits(idEntered) {
         if ("flowM3H" == idEntered) {
-          var flowM3H = parseFloat(document.getElementById("flowM3H").value);
+          const flowM3H = parseFloat(document.getElementById("flowM3H").value);
           document.getElementById("flowM3S").value = flowM3H / 3600;
         }
 
         if ("flowM3S" == idEntered) {
-          var flowM3S = parseFloat(document.getElementById("flowM3S").value);
+          const flowM3S = parseFloat(document.getElementById("flowM3S").value);
           document.getElementById("flowM3H").value = flowM3S * 3600;
         }
 
         if ("areaM2" == idEntered) {
-          var areaM2 = parseFloat(document.getElementById("areaM2").value);
+          const areaM2 = parseFloat(document.getElementById("areaM2").value);
           document.getElementById("areaDiameterMM").value =
             (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
         }
 
         if ("areaDiameterMM" == idEntered) {
-          var areaDiameterMM = parseFloat(
+          const areaDiameterMM = parseFloat(
             document.getElementById("areaDiameterMM").value
           );
           document.getElementById("areaM2").value =
@@ -172,8 +176,8 @@
         }
 
         if ("speedMS" == idEntered) {
-          var speedMS = parseFloat(document.getElementById("speedMS").value);
-          var densityKgM3 = parseFloat(
+          const speedMS = parseFloat(document.getElementById("speedMS").value);
+          const densityKgM3 = parseFloat(
             document.getElementById("densityKgM3").value
           );
           document.getElementById("speedDynPressurePa").value =
@@ -181,10 +185,10 @@
         }
 
         if ("speedDynPressurePa" == idEntered) {
-          var speedDynPressurePa = parseFloat(
+          const speedDynPressurePa = parseFloat(
             document.getElementById("speedDynPressurePa").value
           );
-          var densityKgM3 = parseFloat(
+          const densityKgM3 = parseFloat(
             document.getElementById("densityKgM3").value
           );
           document.getElementById("speedMS").value = Math.sqrt(
@@ -193,21 +197,23 @@
         }
 
         if ("densityKgM3" == idEntered) {
-          var densityKgM3 = parseFloat(
+          const densityKgM3 = parseFloat(
             document.getElementById("densityKgM3").value
           );
           if ("speedMS" == inputOrderSpeed) {
-            var speedMS = parseFloat(document.getElementById("speedMS").value);
-            var densityKgM3 = parseFloat(
+            const speedMS = parseFloat(
+              document.getElementById("speedMS").value
+            );
+            const densityKgM3 = parseFloat(
               document.getElementById("densityKgM3").value
             );
             document.getElementById("speedDynPressurePa").value =
               (densityKgM3 / 2) * speedMS ** 2;
           } else if ("speedDynPressurePa" == inputOrderSpeed) {
-            var speedDynPressurePa = parseFloat(
+            const speedDynPressurePa = parseFloat(
               document.getElementById("speedDynPressurePa").value
             );
-            var densityKgM3 = parseFloat(
+            const densityKgM3 = parseFloat(
               document.getElementById("densityKgM3").value
             );
             document.getElementById("speedMS").value = Math.sqrt(
@@ -217,31 +223,41 @@
         }
       }
 
+      function round(value, digitsAfterComma) {}
+
       function calculateThirdValue() {
         if (inputOrder.length >= 2) {
           iO2 = inputOrder.slice(0, 2);
           if (iO2.includes("area") && iO2.includes("flow")) {
             // calculate speed
-            var areaM2 = parseFloat(document.getElementById("areaM2").value);
-            var flowM3S = parseFloat(document.getElementById("flowM3S").value);
-            var speedMS = flowM3S / areaM2;
+            const areaM2 = parseFloat(document.getElementById("areaM2").value);
+            const flowM3S = parseFloat(
+              document.getElementById("flowM3S").value
+            );
+            const speedMS = flowM3S / areaM2;
             document.getElementById("speedMS").value = speedMS;
-            var densityKgM3 = parseFloat(
+            const densityKgM3 = parseFloat(
               document.getElementById("densityKgM3").value
             );
             document.getElementById("speedDynPressurePa").value =
               (densityKgM3 / 2) * speedMS ** 2;
           } else if (iO2.includes("area") && iO2.includes("speed")) {
             // calculate flow
-            var areaM2 = parseFloat(document.getElementById("areaM2").value);
-            var speedMS = parseFloat(document.getElementById("speedMS").value);
+            const areaM2 = parseFloat(document.getElementById("areaM2").value);
+            const speedMS = parseFloat(
+              document.getElementById("speedMS").value
+            );
             flowM3S = speedMS * areaM2;
             document.getElementById("flowM3S").value = flowM3S;
             document.getElementById("flowM3H").value = speedMS * areaM2 * 3600;
           } else if (iO2.includes("flow") && iO2.includes("speed")) {
             // calculate area
-            var flowM3S = parseFloat(document.getElementById("flowM3S").value);
-            var speedMS = parseFloat(document.getElementById("speedMS").value);
+            const flowM3S = parseFloat(
+              document.getElementById("flowM3S").value
+            );
+            const speedMS = parseFloat(
+              document.getElementById("speedMS").value
+            );
             areaM2 = flowM3S / speedMS;
             document.getElementById("areaM2").value = areaM2;
             document.getElementById("areaDiameterMM").value =
@@ -261,9 +277,10 @@
         );
         const lamda = 0.0072 + 0.018 * (flowM3H / areaDiameterMM) ** -0.35;
         const pressureDropPaM =
-          ((lamda * densityKgM3) / (2 * areaDiameterMM / 1000)) * speedMS ** 2;
+          ((lamda * densityKgM3) / ((2 * areaDiameterMM) / 1000)) *
+          speedMS ** 2;
         document.getElementById("pressureDropPaM").value =
-          pressureDropPaM;
+          pressureDropPaM.toFixed(0);
       }
 
       // Array that keeps track of the order of parameter inputs
@@ -296,7 +313,7 @@
 
       // Array that keeps track of the order of parameter inputs
       // possible values: "speedMS", "speedDynPressurePa"
-      inputOrderSpeed = "init";
+      var inputOrderSpeed = "init";
 
       function updateInputOrderSpeed(inputID) {
         if (inputID.startsWith("speed")) {
