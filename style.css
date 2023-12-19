@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0;
+  margin: 8;
+}
+.wrapper {
+  box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.page-header,
+.page-footer {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.page-body {
+  flex-grow: 1;
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 2fr minmax(max-content, 1fr) 2fr;
+  /* grid-template-columns: 2fr 1fr 2fr; */
+  /* grid-template-columns: 1fr fit-content(20%) 1fr; */
+  /* grid-template-columns: max-content 2fr max-content; */
+  align-items: center;
+  grid-gap: 5px;
+}
+.fields label {
+  text-align: right;
+}
+.fields label:after {
+  content: ":";
+}
+.fields input {
+  font-size: larger;
+}
+.fields unit {
+  text-align: left;
+}
