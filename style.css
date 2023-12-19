@@ -23,7 +23,6 @@ body {
   grid-template-rows: auto 1fr auto;
 }
 
-.page-header,
 .page-footer {
   padding: 1em;
   text-align: right;
