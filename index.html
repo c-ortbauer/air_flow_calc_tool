@@ -4,25 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Volumenstrom Rechner</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="/images/apple-touch-icon.png"
+      href="images/apple-touch-icon.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="/images/favicon-32x32.png"
+      href="images/favicon-32x32.png"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="/images/favicon-16x16.png"
+      href="images/favicon-16x16.png"
     />
-    <link rel="manifest" href="/site.webmanifest" />
+    <!-- <link rel="manifest" href="site.webmanifest" /> -->
   </head>
   <body>
     <div class="wrapper">
@@ -31,7 +31,7 @@
         <h2>Volumenstrom</h2>
 
         <div class="fields">
-          <label>Volumenstrom</label>
+          <label for="flowM3H">Volumenstrom</label>
           <input
             type="number"
             id="flowM3H"
@@ -40,7 +40,7 @@
           />
           <unit>m³/h</unit>
 
-          <label>Volumenstrom</label>
+          <label for="flowM3S">Volumenstrom</label>
           <input
             type="number"
             id="flowM3S"
@@ -53,7 +53,7 @@
         <h2>Querschnittsfläche</h2>
 
         <div class="fields">
-          <label>Durchmesser (innen)</label>
+          <label for="areaDiameterMM">Durchmesser (innen)</label>
           <input
             type="number"
             id="areaDiameterMM"
@@ -62,7 +62,7 @@
           />
           <unit>mm</unit>
 
-          <label>Querschnittsfläche</label>
+          <label for="areaM2">Querschnittsfläche</label>
           <input
             type="number"
             id="areaM2"
@@ -75,7 +75,7 @@
         <h2>Geschwindigkeit</h2>
 
         <div class="fields">
-          <label>Geschwindigkeit</label>
+          <label for="speedMS">Geschwindigkeit</label>
           <input
             type="number"
             id="speedMS"
@@ -84,7 +84,7 @@
           />
           <unit>m/s</unit>
 
-          <label>dynamischer Druck</label>
+          <label for="speedDynPressurePa">dynamischer Druck</label>
           <input
             type="number"
             id="speedDynPressurePa"
@@ -93,7 +93,7 @@
           />
           <unit>Pa</unit>
 
-          <label>Dichte</label>
+          <label for="densityKgM3">Dichte</label>
           <input
             type="number"
             id="densityKgM3"
@@ -104,7 +104,7 @@
           />
           <unit>kg/m³</unit>
 
-          <label>Druckverlust</label>
+          <label for="pressureDropPaM">Druckverlust</label>
           <input
             type="number"
             id="pressureDropPaM"
@@ -116,7 +116,7 @@
         </div>
       </main>
 
-      <footer class="page-footer" style="text-align: right">
+      <footer class="page-footer">
         <p>
           Erstellt von
           <a href="mailto:c.ortbauer@scheuch.com">c.ortbauer@scheuch.com</a>
