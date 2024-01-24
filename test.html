@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mutually Exclusive Div Display</title>
+    <style>
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Select Box 1:</legend>
+      <label
+        ><input
+          type="radio"
+          name="group1"
+          value="div1"
+          onchange="updateDisplay()"
+        />
+        Option 1</label
+      >
+      <label
+        ><input
+          type="radio"
+          name="group1"
+          value="div2"
+          onchange="updateDisplay()"
+        />
+        Option 2</label
+      >
+    </fieldset>
+
+    <div id="div1" class="hidden">
+      <h2>Div 1 Content</h2>
+      <!-- Add your content for div1 here -->
+    </div>
+
+    <div id="div2" class="hidden">
+      <h2>Div 2 Content</h2>
+      <!-- Add your content for div2 here -->
+    </div>
+
+    <script>
+      function updateDisplay() {
+        // Hide all divs
+        document
+          .querySelectorAll(".hidden")
+          .forEach((div) => (div.style.display = "none"));
+
+        // Get selected values from the radio buttons
+        const selectBox1Value = document.querySelector(
+          'input[name="group1"]:checked'
+        ).value;
+
+        // Show the selected div
+        const selectedDivId = selectBox1Value;
+        document.getElementById(selectedDivId).style.display = "block";
+      }
+    </script>
+  </body>
+</html>
