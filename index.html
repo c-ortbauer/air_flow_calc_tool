@@ -59,7 +59,7 @@
             name="areaType"
             value="circle"
             checked
-            onchange="updateAreaType()"
+            onchange="updateAreaType(), changedInput(event)"
           />
           <label for="radioAreaTypeCircle">Rohr</label>
 
@@ -68,7 +68,7 @@
             id="radioAreaTypeRectangel"
             name="areaType"
             value="rectangle"
-            onchange="updateAreaType()"
+            onchange="updateAreaType(), changedInput(event)"
           />
           <label for="radioAreaTypeRectangel">Kanal</label>
         </div>
@@ -196,14 +196,24 @@
             oninput="changedInput(event)"
           />
           <unit>kg/m³</unit>
-<!-- TODO fix for Kanal -->
-          <label for="pressureDropPaM">Druckverlust pro Laufmeter (NOT WORKING FOR KANAL)</label>
+
+          <label for="hydraulicDiameterMM">hydraulischer Durchmesser</label>
+          <input
+            type="number"
+            id="hydraulicDiameterMM"
+            placeholder="hydraulischer Durchmesser (mm)"
+            readonly
+          />
+          <unit>mm</unit>
+
+          <label for="pressureDropPaM"
+            >Druckverlust pro Laufmeter</label
+          >
           <input
             type="number"
             id="pressureDropPaM"
             placeholder="Druckverlust (Pa/lfm)"
             readonly
-            oninput="changedInput(event)"
           />
           <unit>Pa/lfm</unit>
         </div>
