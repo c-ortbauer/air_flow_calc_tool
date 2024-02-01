@@ -42,6 +42,7 @@ h3 {
   /* grid-template-columns: max-content 2fr max-content; */
   align-items: center;
   grid-gap: 5px;
+  margin: 5px;
 }
 .fields label {
   text-align: right;
@@ -54,4 +55,27 @@ h3 {
 }
 .fields unit {
   text-align: left;
+}
+
+.radio-container {
+  text-align: center;
+}
+
+.radio-container input {
+  display: none; /* Hide the actual radio buttons */
+}
+
+.radio-container label {
+  display: inline-block;
+  padding: 1em 1.5em;
+  margin-right: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.radio-container input:checked + label {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
 }

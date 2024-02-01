@@ -1,9 +1,23 @@
 function changedInput(event) {
   convertUnits(event.currentTarget.id);
+
+  // Keep track of input oder for area rectangle
+  updateInputOrderAreaRectangle(event.currentTarget.id);
+
+  // Get selected values from the areaType radio buttons
+  const areaTpye = document.querySelector(
+    'input[name="areaType"]:checked'
+  ).value;
+
+  if ("rectangle" == areaTpye) {
+    calculateThirdValueAreaRect();
+  }
+
+  // Keep track of input oder flow, area, speed
   updateInputOrder(event.currentTarget.id);
   if (inputOrder.length >= 2) {
     calculateThirdValue();
-    calculatepressureDrop();
+    getPressureDrop();
   }
 }
 
@@ -23,6 +37,8 @@ function convertUnits(idEntered) {
     const areaM2 = parseFloat(document.getElementById("areaM2").value);
     document.getElementById("areaDiameterMM").value =
       (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
+    updateInputOrderAreaRectangle("areaM2");
+    getHydraulicDiameter();
   }
 
   if ("areaDiameterMM" == idEntered) {
@@ -31,6 +47,8 @@ function convertUnits(idEntered) {
     );
     document.getElementById("areaM2").value =
       (areaDiameterMM / 1000 / 2) ** 2 * Math.PI;
+    updateInputOrderAreaRectangle("areaM2");
+    getHydraulicDiameter();
   }
 
   if ("speedMS" == idEntered) {
@@ -79,7 +97,22 @@ function convertUnits(idEntered) {
   }
 }
 
-function round(value, digitsAfterComma) {}
+function updateAreaType() {
+  // Hide all divs
+  document
+    .querySelectorAll(".areaType")
+    .forEach((div) => (div.style.display = "none"));
+
+  // Get selected values from the radio buttons
+  const areaTpye = document.querySelector(
+    'input[name="areaType"]:checked'
+  ).value;
+
+  // Show the selected div
+  document.getElementById(areaTpye).style.display = "block";
+}
+// call function at page load
+updateAreaType();
 
 function calculateThirdValue() {
   if (inputOrder.length >= 2) {
@@ -101,24 +134,47 @@ function calculateThirdValue() {
       const speedMS = parseFloat(document.getElementById("speedMS").value);
       flowM3S = speedMS * areaM2;
       document.getElementById("flowM3S").value = flowM3S;
-      document.getElementById("flowM3H").value = speedMS * areaM2 * 3600;
+      convertUnits("flowM3S");
     } else if (iO2.includes("flow") && iO2.includes("speed")) {
       // calculate area
       const flowM3S = parseFloat(document.getElementById("flowM3S").value);
       const speedMS = parseFloat(document.getElementById("speedMS").value);
       areaM2 = flowM3S / speedMS;
       document.getElementById("areaM2").value = areaM2;
-      document.getElementById("areaDiameterMM").value =
-        (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
+      convertUnits("areaM2");
+      updateInputOrderAreaRectangle("areaM2");
+      calculateThirdValueAreaRect("areaM2");
     }
   }
 }
 
-function calculatepressureDrop() {
+function getHydraulicDiameter() {
+  const areaTpye = document.querySelector(
+    'input[name="areaType"]:checked'
+  ).value;
+
+  if ("circle" == areaTpye) {
+    document.getElementById("hydraulicDiameterMM").value = parseFloat(
+      document.getElementById("areaDiameterMM").value
+    );
+  } else {
+    const heightMM = parseFloat(
+      document.getElementById("areaRectHeightMM").value
+    );
+    const widthMM = parseFloat(
+      document.getElementById("areaRectWidthMM").value
+    );
+    document.getElementById("hydraulicDiameterMM").value =
+      (2 * heightMM * widthMM) / (heightMM + widthMM);
+  }
+}
+
+function getPressureDrop() {
   const flowM3H = parseFloat(document.getElementById("flowM3H").value);
   const speedMS = parseFloat(document.getElementById("speedMS").value);
+  getHydraulicDiameter();
   const areaDiameterMM = parseFloat(
-    document.getElementById("areaDiameterMM").value
+    document.getElementById("hydraulicDiameterMM").value
   );
   const densityKgM3 = parseFloat(document.getElementById("densityKgM3").value);
   const lamda = 0.0072 + 0.018 * (flowM3H / areaDiameterMM) ** -0.35;
@@ -155,12 +211,74 @@ function updateInputOrder(inputID) {
   }
 }
 
-// Array that keeps track of the order of parameter inputs
+// var that track of the order of parameter inputs
 // possible values: "speedMS", "speedDynPressurePa"
 var inputOrderSpeed = "init";
 
 function updateInputOrderSpeed(inputID) {
   if (inputID.startsWith("speed")) {
     inputOrderSpeed = inputID;
+  }
+}
+
+// Array that keeps track of the order of parameter inputs
+// possible values: "height", "width", "area"
+inputOrderAreaRectangle = new Array(0);
+
+function updateInputOrderAreaRectangle(inputID) {
+  if (inputID == "areaRectHeightMM") {
+    updateinputOrderAreaRectangeArray("height");
+  } else if (inputID == "areaRectWidthMM") {
+    updateinputOrderAreaRectangeArray("width");
+  } else if (inputID == "areaM2") {
+    updateinputOrderAreaRectangeArray("area");
+  } else {
+  }
+
+  function updateinputOrderAreaRectangeArray(inputType) {
+    const index = inputOrderAreaRectangle.indexOf(inputType);
+    if (index > -1) {
+      // Remove the element from its current position
+      inputOrderAreaRectangle.splice(index, 1);
+      // Add it to the front of the array
+      inputOrderAreaRectangle.unshift(inputType);
+    } else {
+      // Add to front of the array
+      inputOrderAreaRectangle.unshift(inputType);
+    }
+  }
+}
+
+function calculateThirdValueAreaRect() {
+  if (inputOrderAreaRectangle.length >= 2) {
+    iO2 = inputOrderAreaRectangle.slice(0, 2);
+    if (iO2.includes("height") && iO2.includes("width")) {
+      // calculate area
+      const heightMM = parseFloat(
+        document.getElementById("areaRectHeightMM").value
+      );
+      const widthMM = parseFloat(
+        document.getElementById("areaRectWidthMM").value
+      );
+      document.getElementById("areaM2").value = (heightMM * widthMM) / 1e6;
+      convertUnits("areaM2");
+    } else if (iO2.includes("area") && iO2.includes("height")) {
+      // calculate width
+      const areaM2 = parseFloat(document.getElementById("areaM2").value);
+      const heightMM = parseFloat(
+        document.getElementById("areaRectHeightMM").value
+      );
+      document.getElementById("areaRectWidthMM").value =
+        (areaM2 / heightMM) * 1e6;
+    } else if (iO2.includes("area") && iO2.includes("width")) {
+      // calculate height
+      const areaM2 = parseFloat(document.getElementById("areaM2").value);
+      const widthMM = parseFloat(
+        document.getElementById("areaRectWidthMM").value
+      );
+      document.getElementById("areaRectHeightMM").value =
+        (areaM2 / widthMM) * 1e6;
+    }
+    getHydraulicDiameter();
   }
 }

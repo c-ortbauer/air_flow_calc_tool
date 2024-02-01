@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .radio-container {
+      text-align: center;
+    }
+
+    .radio-container label {
+      margin-right: 10px;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+
+    /* Style the label when the associated radio button is checked */
+    .radio-container input:checked + label {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+  </style>
+  <title>Styled Radio Buttons</title>
+</head>
+<body>
+
+<div class="radio-container">
+  <input type="radio" name="option" id="option1" value="option1" checked>
+  <label for="option1">Option 1</label>
+
+  <input type="radio" name="option" id="option2" value="option2">
+  <label for="option2">Option 2</label>
+</div>
+
+</body>
+</html>
