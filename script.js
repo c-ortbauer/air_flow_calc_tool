@@ -1,7 +1,10 @@
 function changedInput(event) {
   convertUnits(event.currentTarget.id);
-  updateInputOrder(event.currentTarget.id);
   updateInputOrderAreaRectanle(event.currentTarget.id);
+  if (inputOrderAreaRectangle.length >= 2) {
+    calculateThirdValueAreaRect();
+  }
+  updateInputOrder(event.currentTarget.id);
   if (inputOrder.length >= 2) {
     calculateThirdValue();
     calculatepressureDrop();
@@ -186,11 +189,11 @@ function updateInputOrderSpeed(inputID) {
 inputOrderAreaRectangle = new Array(0);
 
 function updateInputOrderAreaRectanle(inputID) {
-  if (inputID.startsWith("areaRectHeight")) {
+  if (inputID == "areaRectHeightMM") {
     updateinputOrderAreaRectangeArray("height");
-  } else if (inputID.startsWith("areaRectWidth")) {
+  } else if (inputID == "areaRectWidthMM") {
     updateinputOrderAreaRectangeArray("width");
-  } else if (inputID.startsWith("areaM2")) {
+  } else if (inputID == "areaM2") {
     updateinputOrderAreaRectangeArray("area");
   } else {
   }
@@ -205,6 +208,40 @@ function updateInputOrderAreaRectanle(inputID) {
     } else {
       // Add to front of the array
       inputOrderAreaRectangle.unshift(inputType);
+    }
+  }
+}
+
+function calculateThirdValueAreaRect() {
+  if (inputOrderAreaRectangle.length >= 2) {
+    iO2 = inputOrderAreaRectangle.slice(0, 2);
+    if (iO2.includes("height") && iO2.includes("width")) {
+      // calculate area
+      const heightMM = parseFloat(
+        document.getElementById("areaRectHeightMM").value
+      );
+      const widthMM = parseFloat(
+        document.getElementById("areaRectWidthMM").value
+      );
+      document.getElementById("areaM2").value = heightMM * widthMM / 1e6;
+    } else if (iO2.includes("area") && iO2.includes("height")) {
+      // calculate width
+      const areaM2 = parseFloat(
+        document.getElementById("areaM2").value
+      );
+      const heightMM = parseFloat(
+        document.getElementById("areaRectHeightMM").value
+      );
+      document.getElementById("areaRectWidthMM").value = areaM2 / heightMM * 1e6;
+    } else if (iO2.includes("area") && iO2.includes("width")) {
+      // calculate height
+      const areaM2 = parseFloat(
+        document.getElementById("areaM2").value
+      );
+      const widthMM = parseFloat(
+        document.getElementById("areaRectWidthMM").value
+      );
+      document.getElementById("areaRectHeightMM").value = areaM2 / widthMM * 1e6;
     }
   }
 }
