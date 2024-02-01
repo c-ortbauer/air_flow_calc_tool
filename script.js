@@ -1,6 +1,7 @@
 function changedInput(event) {
   convertUnits(event.currentTarget.id);
   updateInputOrder(event.currentTarget.id);
+  updateInputOrderAreaRectanle(event.currentTarget.id);
   if (inputOrder.length >= 2) {
     calculateThirdValue();
     calculatepressureDrop();
@@ -96,7 +97,6 @@ function updateAreaType() {
 // call function at page load
 updateAreaType();
 
-
 function calculateThirdValue() {
   if (inputOrder.length >= 2) {
     iO2 = inputOrder.slice(0, 2);
@@ -171,12 +171,40 @@ function updateInputOrder(inputID) {
   }
 }
 
-// Array that keeps track of the order of parameter inputs
+// var that track of the order of parameter inputs
 // possible values: "speedMS", "speedDynPressurePa"
 var inputOrderSpeed = "init";
 
 function updateInputOrderSpeed(inputID) {
   if (inputID.startsWith("speed")) {
     inputOrderSpeed = inputID;
+  }
+}
+
+// Array that keeps track of the order of parameter inputs
+// possible values: "height", "width", "area"
+inputOrderAreaRectangle = new Array(0);
+
+function updateInputOrderAreaRectanle(inputID) {
+  if (inputID.startsWith("areaRectHeight")) {
+    updateinputOrderAreaRectangeArray("height");
+  } else if (inputID.startsWith("areaRectWidth")) {
+    updateinputOrderAreaRectangeArray("width");
+  } else if (inputID.startsWith("areaM2")) {
+    updateinputOrderAreaRectangeArray("area");
+  } else {
+  }
+
+  function updateinputOrderAreaRectangeArray(inputType) {
+    const index = inputOrderAreaRectangle.indexOf(inputType);
+    if (index > -1) {
+      // Remove the element from its current position
+      inputOrderAreaRectangle.splice(index, 1);
+      // Add it to the front of the array
+      inputOrderAreaRectangle.unshift(inputType);
+    } else {
+      // Add to front of the array
+      inputOrderAreaRectangle.unshift(inputType);
+    }
   }
 }
