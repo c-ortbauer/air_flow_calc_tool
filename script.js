@@ -79,6 +79,24 @@ function convertUnits(idEntered) {
   }
 }
 
+function updateAreaType() {
+  // Hide all divs
+  document
+    .querySelectorAll(".areaType")
+    .forEach((div) => (div.style.display = "none"));
+
+  // Get selected values from the radio buttons
+  const selectBox1Value = document.querySelector(
+    'input[name="areaType"]:checked'
+  ).value;
+
+  // Show the selected div
+  const selectedDivId = selectBox1Value;
+  document.getElementById(selectedDivId).style.display = "block";
+}
+
+updateAreaType();
+
 function round(value, digitsAfterComma) {}
 
 function calculateThirdValue() {

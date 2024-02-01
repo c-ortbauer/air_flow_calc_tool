@@ -1,64 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mutually Exclusive Div Display</title>
-    <style>
-      .hidden {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <fieldset>
-      <legend>Select Box 1:</legend>
-      <label
-        ><input
-          type="radio"
-          name="group1"
-          value="div1"
-          onchange="updateDisplay()"
-        />
-        Option 1</label
-      >
-      <label
-        ><input
-          type="radio"
-          name="group1"
-          value="div2"
-          onchange="updateDisplay()"
-        />
-        Option 2</label
-      >
-    </fieldset>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-    <div id="div1" class="hidden">
-      <h2>Div 1 Content</h2>
-      <!-- Add your content for div1 here -->
-    </div>
+    .radio-container {
+      text-align: center;
+    }
 
-    <div id="div2" class="hidden">
-      <h2>Div 2 Content</h2>
-      <!-- Add your content for div2 here -->
-    </div>
+    .radio-container label {
+      margin-right: 10px;
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-block;
+    }
 
-    <script>
-      function updateDisplay() {
-        // Hide all divs
-        document
-          .querySelectorAll(".hidden")
-          .forEach((div) => (div.style.display = "none"));
+    .radio-container input {
+      /* Remove the display: none; to make the radio buttons visible */
+    }
 
-        // Get selected values from the radio buttons
-        const selectBox1Value = document.querySelector(
-          'input[name="group1"]:checked'
-        ).value;
+    /* Style the label when the associated radio button is checked */
+    .radio-container input:checked + label {
+      background-color: #007bff;
+      color: #fff;
+      border-color: #007bff;
+    }
+  </style>
+  <title>Styled Radio Buttons</title>
+</head>
+<body>
 
-        // Show the selected div
-        const selectedDivId = selectBox1Value;
-        document.getElementById(selectedDivId).style.display = "block";
-      }
-    </script>
-  </body>
+<div class="radio-container">
+  <input type="radio" name="option" id="option1" value="option1" checked>
+  <label for="option1">Option 1</label>
+
+  <input type="radio" name="option" id="option2" value="option2">
+  <label for="option2">Option 2</label>
+</div>
+
+</body>
 </html>

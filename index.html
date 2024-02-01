@@ -50,36 +50,65 @@
           <unit>m³/s</unit>
         </div>
 
-        <h2>Querschnittsfläche</h2>
+        <h2 style="margin-bottom: 0.5em">Querschnittsfläche</h2>
+
+        <div class="radio-container">
+          <input
+            type="radio"
+            id="radioAreaTypeCircle"
+            name="areaType"
+            value="circle"
+            checked
+            onchange="updateAreaType()"
+          />
+          <label for="radioAreaTypeCircle">Kreis</label>
+
+          <input
+            type="radio"
+            id="radioAreaTypeRectangel"
+            name="areaType"
+            value="rectangle"
+            onchange="updateAreaType()"
+          />
+          <label for="radioAreaTypeRectangel">Rechteck</label>
+        </div>
+
+        <div id="circle" class="areaType">
+          <div class="fields">
+            <label for="areaDiameterMM">Durchmesser (innen)</label>
+            <input
+              type="number"
+              id="areaDiameterMM"
+              placeholder="Durchmesser (mm)"
+              oninput="changedInput(event)"
+            />
+            <unit>mm</unit>
+          </div>
+        </div>
+
+        <div id="rectangle" class="areaType">
+          <div class="fields">
+            <label for="areaRectHeightMM">Kanal Höhe (innen)</label>
+            <input
+              type="number"
+              id="areaRectHeightMM"
+              placeholder="Kanal Höhe (mm)"
+              oninput="changedInput(event)"
+            />
+            <unit>mm</unit>
+
+            <label for="areaRectWidthMM">Kanal Breite (innen)</label>
+            <input
+              type="number"
+              id="areaRectWidthMM"
+              placeholder="Kanal Breite (mm)"
+              oninput="changedInput(event)"
+            />
+            <unit>mm</unit>
+          </div>
+        </div>
 
         <div class="fields">
-          <label for="areaDiameterMM">Durchmesser (innen)</label>
-          <input
-            type="number"
-            id="areaDiameterMM"
-            placeholder="Durchmesser (mm)"
-            oninput="changedInput(event)"
-          />
-          <unit>mm</unit>
-
-          <label for="areaRectHeightMM">Kanal Höhe (innen)</label>
-          <input
-            type="number"
-            id="areaRectHeightMM"
-            placeholder="Kanal Höhe (mm)"
-            oninput="changedInput(event)"
-          />
-          <unit>mm</unit>
-
-          <label for="areaRectWidthMM">Kanal Breite (innen)</label>
-          <input
-            type="number"
-            id="areaRectWidthMM"
-            placeholder="Kanal Breite (mm)"
-            oninput="changedInput(event)"
-          />
-          <unit>mm</unit>
-
           <label for="areaM2">Querschnittsfläche</label>
           <input
             type="number"
