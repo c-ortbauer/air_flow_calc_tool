@@ -37,7 +37,7 @@ function convertUnits(idEntered) {
     const areaM2 = parseFloat(document.getElementById("areaM2").value);
     document.getElementById("areaDiameterMM").value =
       (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
-    updateInputOrderAreaRectangle("areaM2");
+    // updateInputOrderAreaRectangle("areaM2");
   }
 
   if ("areaDiameterMM" == idEntered) {
@@ -46,7 +46,7 @@ function convertUnits(idEntered) {
     );
     document.getElementById("areaM2").value =
       (areaDiameterMM / 1000 / 2) ** 2 * Math.PI;
-    updateInputOrderAreaRectangle("areaM2");
+    // updateInputOrderAreaRectangle("areaM2");
   }
 
   if ("speedMS" == idEntered) {
