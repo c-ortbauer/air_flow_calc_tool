@@ -1,6 +1,9 @@
 function changedInput(event) {
   convertUnits(event.currentTarget.id);
 
+  // Keep track of input oder flow, area, speed
+  updateInputOrder(event.currentTarget.id);
+
   // Keep track of input oder for area rectangle
   updateInputOrderAreaRectangle(event.currentTarget.id);
 
@@ -13,12 +16,9 @@ function changedInput(event) {
     calculateThirdValueAreaRect();
   }
 
-  // Keep track of input oder flow, area, speed
-  updateInputOrder(event.currentTarget.id);
-  if (inputOrder.length >= 2) {
-    calculateThirdValue();
-    getPressureDrop();
-  }
+  calculateThirdValue();
+  getPressureDrop();
+  getHydraulicDiameter();
 }
 
 // convert entered values to all other units
@@ -38,7 +38,6 @@ function convertUnits(idEntered) {
     document.getElementById("areaDiameterMM").value =
       (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
     updateInputOrderAreaRectangle("areaM2");
-    getHydraulicDiameter();
   }
 
   if ("areaDiameterMM" == idEntered) {
@@ -48,7 +47,6 @@ function convertUnits(idEntered) {
     document.getElementById("areaM2").value =
       (areaDiameterMM / 1000 / 2) ** 2 * Math.PI;
     updateInputOrderAreaRectangle("areaM2");
-    getHydraulicDiameter();
   }
 
   if ("speedMS" == idEntered) {
