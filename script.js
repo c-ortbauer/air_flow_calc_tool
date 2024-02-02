@@ -1,24 +1,18 @@
 function changedInput(event) {
+  // Convert user input into different units
   convertUnits(event.currentTarget.id);
+
+  // Keep track of input oder flow, area, speed
+  updateInputOrder(event.currentTarget.id);
 
   // Keep track of input oder for area rectangle
   updateInputOrderAreaRectangle(event.currentTarget.id);
 
-  // Get selected values from the areaType radio buttons
-  const areaTpye = document.querySelector(
-    'input[name="areaType"]:checked'
-  ).value;
-
-  if ("rectangle" == areaTpye) {
-    calculateThirdValueAreaRect();
-  }
-
-  // Keep track of input oder flow, area, speed
-  updateInputOrder(event.currentTarget.id);
-  if (inputOrder.length >= 2) {
-    calculateThirdValue();
-    getPressureDrop();
-  }
+  
+  calculateThirdValueAreaRect();
+  calculateThirdValue();
+  getPressureDrop();
+  getHydraulicDiameter();
 }
 
 // convert entered values to all other units
@@ -37,8 +31,7 @@ function convertUnits(idEntered) {
     const areaM2 = parseFloat(document.getElementById("areaM2").value);
     document.getElementById("areaDiameterMM").value =
       (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
-    updateInputOrderAreaRectangle("areaM2");
-    getHydraulicDiameter();
+    // updateInputOrderAreaRectangle("areaM2");
   }
 
   if ("areaDiameterMM" == idEntered) {
@@ -47,8 +40,7 @@ function convertUnits(idEntered) {
     );
     document.getElementById("areaM2").value =
       (areaDiameterMM / 1000 / 2) ** 2 * Math.PI;
-    updateInputOrderAreaRectangle("areaM2");
-    getHydraulicDiameter();
+    // updateInputOrderAreaRectangle("areaM2");
   }
 
   if ("speedMS" == idEntered) {
@@ -230,7 +222,7 @@ function updateInputOrderAreaRectangle(inputID) {
     updateinputOrderAreaRectangeArray("height");
   } else if (inputID == "areaRectWidthMM") {
     updateinputOrderAreaRectangeArray("width");
-  } else if (inputID == "areaM2") {
+  } else if (inputID == "areaM2" || inputID == "areaDiameterMM") {
     updateinputOrderAreaRectangeArray("area");
   } else {
   }
