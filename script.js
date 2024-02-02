@@ -1,4 +1,5 @@
 function changedInput(event) {
+  // Convert user input into different units
   convertUnits(event.currentTarget.id);
 
   // Keep track of input oder flow, area, speed
@@ -7,15 +8,8 @@ function changedInput(event) {
   // Keep track of input oder for area rectangle
   updateInputOrderAreaRectangle(event.currentTarget.id);
 
-  // Get selected values from the areaType radio buttons
-  const areaTpye = document.querySelector(
-    'input[name="areaType"]:checked'
-  ).value;
-
-  if ("rectangle" == areaTpye) {
-    calculateThirdValueAreaRect();
-  }
-
+  
+  calculateThirdValueAreaRect();
   calculateThirdValue();
   getPressureDrop();
   getHydraulicDiameter();
@@ -228,7 +222,7 @@ function updateInputOrderAreaRectangle(inputID) {
     updateinputOrderAreaRectangeArray("height");
   } else if (inputID == "areaRectWidthMM") {
     updateinputOrderAreaRectangeArray("width");
-  } else if (inputID == "areaM2") {
+  } else if (inputID == "areaM2" || inputID == "areaDiameterMM") {
     updateinputOrderAreaRectangeArray("area");
   } else {
   }
