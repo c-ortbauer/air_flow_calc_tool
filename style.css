@@ -79,3 +79,10 @@ h3 {
   color: #fff;
   border-color: #007bff;
 }
+
+input[readonly] {
+  background-color: #f0f0f0; /* Light gray background */
+  border: 1px solid #ccc; /* Gray border */
+  color: #555; /* Dark gray text */
+  cursor: not-allowed; /* Show not-allowed cursor */
+}

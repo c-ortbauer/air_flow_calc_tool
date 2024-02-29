@@ -3,16 +3,19 @@ function changedInput(event) {
   convertUnits(event.currentTarget.id);
 
   // Keep track of input oder flow, area, speed
-  updateInputOrder(event.currentTarget.id);
+  updateInputOrderVolumeFlow(event.currentTarget.id);
 
   // Keep track of input oder for area rectangle
-  updateInputOrderAreaRectangle(event.currentTarget.id);
+  updateInputOrderAreaRect(event.currentTarget.id);
 
-  
-  calculateThirdValueAreaRect();
-  calculateThirdValue();
-  getPressureDrop();
+  // Keep track of input oder for area rectangle
+  updateInputOrderMaterial(event.currentTarget.id);
+
+  getThirdValueAreaRect();
+  getThirdValueVolumeFlow();
+  getThirdValueMaterial();
   getHydraulicDiameter();
+  getPressureDrop();
 }
 
 // convert entered values to all other units
@@ -31,7 +34,7 @@ function convertUnits(idEntered) {
     const areaM2 = parseFloat(document.getElementById("areaM2").value);
     document.getElementById("areaDiameterMM").value =
       (areaM2 / Math.PI) ** 0.5 * 2 * 1000;
-    // updateInputOrderAreaRectangle("areaM2");
+    // updateInputOrderAreaRect("areaM2");
   }
 
   if ("areaDiameterMM" == idEntered) {
@@ -40,7 +43,7 @@ function convertUnits(idEntered) {
     );
     document.getElementById("areaM2").value =
       (areaDiameterMM / 1000 / 2) ** 2 * Math.PI;
-    // updateInputOrderAreaRectangle("areaM2");
+    // updateInputOrderAreaRect("areaM2");
   }
 
   if ("speedMS" == idEntered) {
@@ -62,6 +65,22 @@ function convertUnits(idEntered) {
     document.getElementById("speedMS").value = Math.sqrt(
       (2 * speedDynPressurePa) / densityKgM3
     );
+  }
+
+  if ("materialVolumeFlowM3S" == idEntered) {
+    const materialVolumeFlowM3S = parseFloat(
+      document.getElementById("materialVolumeFlowM3S").value
+    );
+    document.getElementById("materialVolumeFlowM3H").value =
+      materialVolumeFlowM3S * 3600;
+  }
+
+  if ("materialVolumeFlowM3H" == idEntered) {
+    const materialVolumeFlowM3H = parseFloat(
+      document.getElementById("materialVolumeFlowM3H").value
+    );
+    document.getElementById("materialVolumeFlowM3S").value =
+      materialVolumeFlowM3H / 3600;
   }
 
   if ("densityKgM3" == idEntered) {
@@ -106,9 +125,9 @@ function updateAreaType() {
 // call function at page load
 updateAreaType();
 
-function calculateThirdValue() {
-  if (inputOrder.length >= 2) {
-    iO2 = inputOrder.slice(0, 2);
+function getThirdValueVolumeFlow() {
+  if (inputOrderArrayVolumeFlow.length >= 2) {
+    iO2 = inputOrderArrayVolumeFlow.slice(0, 2);
     if (iO2.includes("area") && iO2.includes("flow")) {
       // calculate speed
       const areaM2 = parseFloat(document.getElementById("areaM2").value);
@@ -134,8 +153,8 @@ function calculateThirdValue() {
       areaM2 = flowM3S / speedMS;
       document.getElementById("areaM2").value = areaM2;
       convertUnits("areaM2");
-      updateInputOrderAreaRectangle("areaM2");
-      calculateThirdValueAreaRect("areaM2");
+      updateInputOrderAreaRect("areaM2");
+      getThirdValueAreaRect("areaM2");
     }
   }
 }
@@ -146,40 +165,56 @@ function getHydraulicDiameter() {
   ).value;
 
   if ("circle" == areaTpye) {
-    document.getElementById("hydraulicDiameterMM").value = parseFloat(
-      document.getElementById("areaDiameterMM").value
-    );
+    if (!isNaN(parseFloat(document.getElementById("areaDiameterMM").value))) {
+      document.getElementById("hydraulicDiameterMM").value = parseFloat(
+        document.getElementById("areaDiameterMM").value
+      );
+    }
   } else {
-    const heightMM = parseFloat(
-      document.getElementById("areaRectHeightMM").value
-    );
-    const widthMM = parseFloat(
-      document.getElementById("areaRectWidthMM").value
-    );
-    document.getElementById("hydraulicDiameterMM").value =
-      (2 * heightMM * widthMM) / (heightMM + widthMM);
+    if (
+      !isNaN(parseFloat(document.getElementById("areaRectHeightMM").value)) &&
+      !isNaN(parseFloat(document.getElementById("areaRectWidthMM").value))
+    ) {
+      const heightMM = parseFloat(
+        document.getElementById("areaRectHeightMM").value
+      );
+      const widthMM = parseFloat(
+        document.getElementById("areaRectWidthMM").value
+      );
+      document.getElementById("hydraulicDiameterMM").value =
+        (2 * heightMM * widthMM) / (heightMM + widthMM);
+    }
   }
 }
 
 function getPressureDrop() {
-  const flowM3H = parseFloat(document.getElementById("flowM3H").value);
-  const speedMS = parseFloat(document.getElementById("speedMS").value);
-  getHydraulicDiameter();
-  const areaDiameterMM = parseFloat(
-    document.getElementById("hydraulicDiameterMM").value
-  );
-  const densityKgM3 = parseFloat(document.getElementById("densityKgM3").value);
-  const lamda = 0.0072 + 0.018 * (flowM3H / areaDiameterMM) ** -0.35;
-  const pressureDropPaM =
-    ((lamda * densityKgM3) / ((2 * areaDiameterMM) / 1000)) * speedMS ** 2;
-  document.getElementById("pressureDropPaM").value = pressureDropPaM.toFixed(0);
+  if (
+    !isNaN(parseFloat(document.getElementById("flowM3H").value)) &&
+    !isNaN(parseFloat(document.getElementById("speedMS").value)) &&
+    !isNaN(parseFloat(document.getElementById("hydraulicDiameterMM").value))
+  ) {
+    const flowM3H = parseFloat(document.getElementById("flowM3H").value);
+    const speedMS = parseFloat(document.getElementById("speedMS").value);
+    getHydraulicDiameter();
+    const areaDiameterMM = parseFloat(
+      document.getElementById("hydraulicDiameterMM").value
+    );
+    const densityKgM3 = parseFloat(
+      document.getElementById("densityKgM3").value
+    );
+    const lamda = 0.0072 + 0.018 * (flowM3H / areaDiameterMM) ** -0.35;
+    const pressureDropPaM =
+      ((lamda * densityKgM3) / ((2 * areaDiameterMM) / 1000)) * speedMS ** 2;
+    document.getElementById("pressureDropPaM").value =
+      pressureDropPaM.toFixed(0);
+  }
 }
 
 // Array that keeps track of the order of parameter inputs
 // possible values: "area", "flow", "speed"
-inputOrder = new Array(0);
+inputOrderArrayVolumeFlow = new Array(0);
 
-function updateInputOrder(inputID) {
+function updateInputOrderVolumeFlow(inputID) {
   if (inputID.startsWith("area")) {
     updateInputOrderArray("area");
   } else if (inputID.startsWith("flow")) {
@@ -190,15 +225,15 @@ function updateInputOrder(inputID) {
   }
 
   function updateInputOrderArray(inputType) {
-    const index = inputOrder.indexOf(inputType);
+    const index = inputOrderArrayVolumeFlow.indexOf(inputType);
     if (index > -1) {
       // Remove the element from its current position
-      inputOrder.splice(index, 1);
+      inputOrderArrayVolumeFlow.splice(index, 1);
       // Add it to the front of the array
-      inputOrder.unshift(inputType);
+      inputOrderArrayVolumeFlow.unshift(inputType);
     } else {
       // Add to front of the array
-      inputOrder.unshift(inputType);
+      inputOrderArrayVolumeFlow.unshift(inputType);
     }
   }
 }
@@ -215,9 +250,9 @@ function updateInputOrderSpeed(inputID) {
 
 // Array that keeps track of the order of parameter inputs
 // possible values: "height", "width", "area"
-inputOrderAreaRectangle = new Array(0);
+inputOrderArrayAreaRectangle = new Array(0);
 
-function updateInputOrderAreaRectangle(inputID) {
+function updateInputOrderAreaRect(inputID) {
   if (inputID == "areaRectHeightMM") {
     updateinputOrderAreaRectangeArray("height");
   } else if (inputID == "areaRectWidthMM") {
@@ -228,22 +263,22 @@ function updateInputOrderAreaRectangle(inputID) {
   }
 
   function updateinputOrderAreaRectangeArray(inputType) {
-    const index = inputOrderAreaRectangle.indexOf(inputType);
+    const index = inputOrderArrayAreaRectangle.indexOf(inputType);
     if (index > -1) {
       // Remove the element from its current position
-      inputOrderAreaRectangle.splice(index, 1);
+      inputOrderArrayAreaRectangle.splice(index, 1);
       // Add it to the front of the array
-      inputOrderAreaRectangle.unshift(inputType);
+      inputOrderArrayAreaRectangle.unshift(inputType);
     } else {
       // Add to front of the array
-      inputOrderAreaRectangle.unshift(inputType);
+      inputOrderArrayAreaRectangle.unshift(inputType);
     }
   }
 }
 
-function calculateThirdValueAreaRect() {
-  if (inputOrderAreaRectangle.length >= 2) {
-    iO2 = inputOrderAreaRectangle.slice(0, 2);
+function getThirdValueAreaRect() {
+  if (inputOrderArrayAreaRectangle.length >= 2) {
+    iO2 = inputOrderArrayAreaRectangle.slice(0, 2);
     if (iO2.includes("height") && iO2.includes("width")) {
       // calculate area
       const heightMM = parseFloat(
@@ -272,5 +307,95 @@ function calculateThirdValueAreaRect() {
         (areaM2 / widthMM) * 1e6;
     }
     getHydraulicDiameter();
+  }
+}
+
+// Array that keeps track of the order of parameter inputs
+// possible values: "massLoading", "massFlow", "volumeFlow"
+inputOrderArrayMaterial = new Array(0);
+
+function updateInputOrderMaterial(inputID) {
+  if (inputID == "materialLoadingGM3") {
+    updateinputOrderArrayMaterial("massLoading");
+  } else if (inputID == "materialMassFlowKgS") {
+    updateinputOrderArrayMaterial("massFlow");
+  } else if (
+    inputID == "materialVolumeFlowM3H" ||
+    inputID == "materialVolumeFlowM3S"
+  ) {
+    updateinputOrderArrayMaterial("volumeFlow");
+  } else {
+  }
+
+  // TODO consolidate all updateinputOrder... functions into one combined fn
+  function updateinputOrderArrayMaterial(inputType) {
+    const index = inputOrderArrayMaterial.indexOf(inputType);
+    // If the entry is already in the array
+    if (index > -1) {
+      // Remove the element from its current position
+      inputOrderArrayMaterial.splice(index, 1);
+      // Add entry to the front of the array
+      inputOrderArrayMaterial.unshift(inputType);
+    } else {
+      // Add entry to the front of the array
+      inputOrderArrayMaterial.unshift(inputType);
+    }
+  }
+}
+
+function getThirdValueMaterial() {
+  if (inputOrderArrayMaterial.slice(0, 1).includes("massFlow")) {
+    const materialMassFlowKgS = parseFloat(
+      document.getElementById("materialMassFlowKgS").value
+    );
+    const materialDensityKgM3 = parseFloat(
+      document.getElementById("materialDensityKgM3").value
+    );
+    document.getElementById("materialVolumeFlowM3S").value =
+      materialMassFlowKgS / materialDensityKgM3;
+    convertUnits("materialVolumeFlowM3S");
+  }
+
+  if (inputOrderArrayMaterial.slice(0, 1).includes("volumeFlow")) {
+    const materialVolumeFlowM3S = parseFloat(
+      document.getElementById("materialVolumeFlowM3S").value
+    );
+    const materialDensityKgM3 = parseFloat(
+      document.getElementById("materialDensityKgM3").value
+    );
+    document.getElementById("materialMassFlowKgS").value =
+      materialVolumeFlowM3S * materialDensityKgM3;
+  }
+
+  if (
+    inputOrderArrayMaterial.slice(0, 1).includes("massLoading") &&
+    !isNaN(parseFloat(document.getElementById("flowM3S").value))
+  ) {
+    const materialLoadingGM3 = parseFloat(
+      document.getElementById("materialLoadingGM3").value
+    );
+    const flowM3S = parseFloat(document.getElementById("flowM3S").value);
+    const materialMassFlowKgS = (flowM3S * materialLoadingGM3) / 1000;
+    document.getElementById("materialMassFlowKgS").value = materialMassFlowKgS;
+
+    const materialDensityKgM3 = parseFloat(
+      document.getElementById("materialDensityKgM3").value
+    );
+    document.getElementById("materialVolumeFlowM3S").value =
+      materialMassFlowKgS / materialDensityKgM3;
+    convertUnits("materialVolumeFlowM3S");
+  }
+
+  if (
+    (inputOrderArrayMaterial.slice(0, 1).includes("massFlow") ||
+      inputOrderArrayMaterial.slice(0, 1).includes("volumeFlow")) &&
+    !isNaN(parseFloat(document.getElementById("flowM3S").value))
+  ) {
+    const materialMassFlowKgS = parseFloat(
+      document.getElementById("materialMassFlowKgS").value
+    );
+    const flowM3S = parseFloat(document.getElementById("flowM3S").value);
+    const materialLoadingGM3 = (materialMassFlowKgS * 1000) / flowM3S;
+    document.getElementById("materialLoadingGM3").value = materialLoadingGM3;
   }
 }

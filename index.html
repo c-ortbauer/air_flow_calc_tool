@@ -144,19 +144,28 @@
         <h2>Material</h2>
 
         <div class="fields">
-          <label for="materialLaodingGM3">Materialbeladung</label>
+          <label for="materialLoadingGM3">Materialbeladung</label>
           <input
             type="number"
-            id="materialLaodingGM3"
+            id="materialLoadingGM3"
             placeholder="Materialbeladung (g/m³)"
             oninput="changedInput(event)"
           />
           <unit>g/m³</unit>
 
-          <label for="densityMaterialKgM3">Dichte Material</label>
+          <label for="materialMassFlowKgS">Materialstrom</label>
           <input
             type="number"
-            id="densityMaterialKgM3"
+            id="materialMassFlowKgS"
+            placeholder="Materialstrom (kg/s)"
+            oninput="changedInput(event)"
+          />
+          <unit>kg/s</unit>
+
+          <label for="materialDensityKgM3">Schüttgewicht</label>
+          <input
+            type="number"
+            id="materialDensityKgM3"
             value="100"
             step="0.05"
             placeholder="Dichte Material (kg/m³)"
@@ -164,28 +173,19 @@
           />
           <unit>kg/m³</unit>
 
-          <label for="materialMassKgS">Materialstrom</label>
+          <label for="materialVolumeFlowM3H">Materialmenge</label>
           <input
             type="number"
-            id="materialMassKgS"
-            placeholder="Materialstrom (kg/s)"
-            oninput="changedInput(event)"
-          />
-          <unit>kg/s</unit>
-          
-          <label for="materialMassM3H">Materialmenge</label>
-          <input
-            type="number"
-            id="materialMassM3H"
+            id="materialVolumeFlowM3H"
             placeholder="Materialmenge (m³/h)"
             oninput="changedInput(event)"
           />
           <unit>m³/h</unit>
 
-          <label for="materialMassM3S">Materialmenge</label>
+          <label for="materialVolumeFlowM3S">Materialmenge</label>
           <input
             type="number"
-            id="materialMassM3S"
+            id="materialVolumeFlowM3S"
             placeholder="Materialmenge (m³/s)"
             oninput="changedInput(event)"
           />
@@ -215,9 +215,7 @@
           />
           <unit>mm</unit>
 
-          <label for="pressureDropPaM"
-            >Druckverlust pro Laufmeter</label
-          >
+          <label for="pressureDropPaM">Druckverlust pro Laufmeter</label>
           <input
             type="number"
             id="pressureDropPaM"
